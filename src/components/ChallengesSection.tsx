@@ -7,6 +7,7 @@ import { Flag, Terminal, Trophy, Timer, Bug, Database, Server, Shield, Lock } fr
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import TerminalEffect from './TerminalEffect';
 import { Textarea } from '@/components/ui/textarea';
+import { Link } from 'react-router-dom';
 
 interface ChallengeProps {
   title: string;
@@ -302,7 +303,7 @@ const ChallengesSection = () => {
               <span>Next challenge starts in: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m</span>
             </div>
             
-            <GradientButton>
+            <GradientButton as={Link} to="/challenges">
               Join Competition
             </GradientButton>
           </div>
@@ -316,7 +317,7 @@ const ChallengesSection = () => {
                 value={flagSubmission}
                 onChange={(e) => setFlagSubmission(e.target.value)}
               />
-              <GradientButton className="whitespace-nowrap">
+              <GradientButton className="whitespace-nowrap" as={Link} to="/challenges">
                 Submit Flag
               </GradientButton>
             </div>
@@ -398,6 +399,10 @@ const ChallengesSection = () => {
               </tbody>
             </table>
           </div>
+          
+          <GradientButton as={Link} to="/challenges" className="mt-8">
+            View Full Leaderboard
+          </GradientButton>
         </div>
       </div>
     </section>

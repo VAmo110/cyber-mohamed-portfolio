@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import GradientButton from './GradientButton';
 import { Badge } from '@/components/ui/badge';
 import { Layers } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface TeamCardProps {
   title: string;
@@ -109,8 +110,9 @@ const TeamCard: React.FC<TeamCardProps> = ({
         )}
         
         <GradientButton 
+          as={Link}
+          to={`/teams?team=${title.toLowerCase()}`}
           className={`w-full mt-6 bg-gradient-to-r ${getGradientClass()} transform transition-all duration-300 ${isHovered ? 'translate-y-0' : 'translate-y-1'}`}
-          href={`#${title.toLowerCase().replace(' ', '-')}-details`}
         >
           Explore {title}
         </GradientButton>

@@ -3,6 +3,7 @@ import React from 'react';
 import TeamCard from './TeamCard';
 import { Shield, Lock, ShieldCheck } from 'lucide-react';
 import GradientButton from './GradientButton';
+import { Link } from 'react-router-dom';
 
 const TeamSection = () => {
   const teams = [
@@ -78,8 +79,8 @@ const TeamSection = () => {
         </div>
         
         <div className="mt-16 text-center">
-          <GradientButton href="#team-details" className="text-lg">
-            Explore All Security Teams
+          <GradientButton as={Link} to="/teams" className="text-lg">
+            Explore Security Teams
           </GradientButton>
         </div>
       </div>
