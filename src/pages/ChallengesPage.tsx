@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -57,7 +58,7 @@ const ChallengesPage = () => {
     toast({
       title: "Challenge Completed!",
       description: `You earned ${points} points!`,
-      variant: "success"
+      variant: "default"
     });
   };
   
