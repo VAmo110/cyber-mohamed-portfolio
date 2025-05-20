@@ -1,44 +1,52 @@
 
 import React from 'react';
 import TeamCard from './TeamCard';
+import { Shield, Lock, ShieldCheck } from 'lucide-react';
+import GradientButton from './GradientButton';
 
 const TeamSection = () => {
   const teams = [
     {
       title: "Red Team",
       color: "red",
-      icon: "/placeholder.svg", // Replace with actual icon
+      icon: <Shield className="w-10 h-10 text-red-500" />,
       description: "Offensive security specialists focused on identifying vulnerabilities through simulated attacks and penetration testing.",
       features: [
-        "Penetration Testing Labs",
-        "Offensive Security Skills",
-        "Kali Linux Demos",
-        "Exploit Development"
-      ]
+        "Advanced Penetration Testing Labs",
+        "Exploit Development Workshops",
+        "Social Engineering Techniques",
+        "OWASP Top 10 Challenges"
+      ],
+      tools: ["Metasploit", "Burp Suite", "Kali Linux", "Cobalt Strike"],
+      backgroundImage: "/red-team-bg.jpg"
     },
     {
       title: "Blue Team",
       color: "blue",
-      icon: "/placeholder.svg", // Replace with actual icon
+      icon: <ShieldCheck className="w-10 h-10 text-blue-500" />,
       description: "Defensive security experts specializing in detection, incident response, and maintaining security controls.",
       features: [
-        "Defense Tools & Strategies",
-        "SIEM/SOC Dashboards",
+        "SOC Operations & SIEM Mastery",
+        "Threat Hunting Techniques",
         "Incident Response Playbooks",
-        "Threat Hunting Techniques"
-      ]
+        "Security Hardening Guides"
+      ],
+      tools: ["Splunk", "ELK Stack", "Wireshark", "Snort IDS"],
+      backgroundImage: "/blue-team-bg.jpg"
     },
     {
       title: "Purple Team",
       color: "purple",
-      icon: "/placeholder.svg", // Replace with actual icon
+      icon: <Lock className="w-10 h-10 text-purple-500" />,
       description: "Collaborative security approach combining offensive and defensive perspectives for comprehensive protection.",
       features: [
         "Attack/Defense Simulations",
-        "Collaboration Frameworks",
-        "MITRE ATT&CK Mappings",
-        "Security Assessment Workflows"
-      ]
+        "Breach & Attack Simulation (BAS)",
+        "MITRE ATT&CK Framework Integration",
+        "Security Controls Validation"
+      ],
+      tools: ["Atomic Red Team", "Caldera", "PurpleSharp", "Prelude Operator"],
+      backgroundImage: "/purple-team-bg.jpg"
     }
   ];
 
@@ -54,7 +62,7 @@ const TeamSection = () => {
           training, and practical knowledge for comprehensive cybersecurity mastery.
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {teams.map((team, index) => (
             <TeamCard
               key={index}
@@ -63,8 +71,16 @@ const TeamSection = () => {
               icon={team.icon}
               description={team.description}
               features={team.features}
+              tools={team.tools}
+              backgroundImage={team.backgroundImage}
             />
           ))}
+        </div>
+        
+        <div className="mt-16 text-center">
+          <GradientButton href="#team-details" className="text-lg">
+            Explore All Security Teams
+          </GradientButton>
         </div>
       </div>
     </section>
