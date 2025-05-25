@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
@@ -11,14 +12,81 @@ import CyberFeatureSection from '@/components/CyberFeatureSection';
 import ChallengesSection from '@/components/ChallengesSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
-import BackgroundAnimation from '@/components/BackgroundAnimation';
+import EnhancedBackgroundAnimation from '@/components/EnhancedBackgroundAnimation';
 import CyberSecurityTips from '@/components/CyberSecurityTips';
+import GamificationSystem from '@/components/GamificationSystem';
+import CyberAssistant from '@/components/CyberAssistant';
+import CyberTerminal from '@/components/CyberTerminal';
+import KnowledgeHub from '@/components/KnowledgeHub';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
+import { useInView } from 'react-intersection-observer';
 
 const Index = () => {
   const { toast } = useToast();
   
+  // Track user engagement
+  const [progress, setProgress] = useState(0);
+  const [visited, setVisited] = useState<Record<string, boolean>>({
+    about: false,
+    teams: false,
+    features: false,
+    courses: false,
+    challenges: false,
+    content: false,
+    projects: false,
+    knowledge: false,
+    contact: false
+  });
+
+  // Intersection observers for sections
+  const [aboutRef, aboutInView] = useInView({ threshold: 0.3 });
+  const [teamsRef, teamsInView] = useInView({ threshold: 0.3 });
+  const [featuresRef, featuresInView] = useInView({ threshold: 0.3 });
+  const [coursesRef, coursesInView] = useInView({ threshold: 0.3 });
+  const [challengesRef, challengesInView] = useInView({ threshold: 0.3 });
+  const [contentRef, contentInView] = useInView({ threshold: 0.3 });
+  const [projectsRef, projectsInView] = useInView({ threshold: 0.3 });
+  const [knowledgeRef, knowledgeInView] = useInView({ threshold: 0.3 });
+  const [contactRef, contactInView] = useInView({ threshold: 0.3 });
+
+  // Track section visits
+  useEffect(() => {
+    const sections = {
+      about: aboutInView,
+      teams: teamsInView,
+      features: featuresInView,
+      courses: coursesInView,
+      challenges: challengesInView,
+      content: contentInView,
+      projects: projectsInView,
+      knowledge: knowledgeInView,
+      contact: contactInView
+    };
+
+    Object.entries(sections).forEach(([section, inView]) => {
+      if (inView && !visited[section]) {
+        setVisited(prev => ({
+          ...prev,
+          [section]: true
+        }));
+
+        toast({
+          title: `Section Unlocked: ${section.charAt(0).toUpperCase() + section.slice(1)}`,
+          description: "Keep exploring to unlock achievements!",
+          variant: "default"
+        });
+      }
+    });
+  }, [aboutInView, teamsInView, featuresInView, coursesInView, challengesInView, contentInView, projectsInView, knowledgeInView, contactInView, visited, toast]);
+
+  // Update progress based on visited sections
+  useEffect(() => {
+    const totalSections = Object.keys(visited).length;
+    const visitedCount = Object.values(visited).filter(Boolean).length;
+    setProgress(Math.round((visitedCount / totalSections) * 100));
+  }, [visited]);
+
   // Smooth scroll function for navigation links
   useEffect(() => {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -28,7 +96,6 @@ const Index = () => {
         const href = this.getAttribute('href');
         if (!href) return;
         
-        // For the '#' link (usually home), just scroll to top
         if (href === '#') {
           window.scrollTo({
             top: 0,
@@ -53,148 +120,182 @@ const Index = () => {
       });
     };
   }, []);
-  
-  // Track user engagement
-  const [progress, setProgress] = useState(0);
-  const [visited, setVisited] = useState<Record<string, boolean>>({
-    about: false,
-    teams: false,
-    features: false,
-    courses: false,
-    challenges: false,
-    content: false,
-    projects: false,
-    contact: false
-  });
-  
-  // Add a scrolling animation effect and section tracking
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-fade-in');
-          
-          // Track section visit
-          const sectionId = entry.target.id;
-          if (sectionId && !visited[sectionId]) {
-            setVisited(prev => ({
-              ...prev,
-              [sectionId]: true
-            }));
-            
-            // Give feedback for first visit to each section
-            toast({
-              title: `Exploring: ${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}`,
-              description: "Unlock more content by exploring all sections",
-              variant: "default"
-            });
-          }
-          
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-    
-    document.querySelectorAll('section[id]').forEach(section => {
-      observer.observe(section);
-    });
-    
-    return () => {
-      document.querySelectorAll('section[id]').forEach(section => {
-        observer.unobserve(section);
-      });
-    };
-  }, [visited, toast]);
-  
-  // Update progress based on visited sections
-  useEffect(() => {
-    const totalSections = Object.keys(visited).length;
-    const visitedCount = Object.values(visited).filter(Boolean).length;
-    
-    setProgress(Math.round((visitedCount / totalSections) * 100));
-  }, [visited]);
 
   return (
-    <div className="min-h-screen text-cyber-light overflow-x-hidden">
+    <motion.div 
+      className="min-h-screen text-cyber-light overflow-x-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
       <Header />
       <main>
-        {/* Hero section with particles background */}
-        <div className="relative">
-          <BackgroundAnimation type="particles" opacity={0.1} speed="slow" />
+        {/* Hero section with enhanced particles background */}
+        <motion.div 
+          className="relative"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+        >
+          <EnhancedBackgroundAnimation type="particles" className="opacity-20" />
           <HeroSection />
-        </div>
+        </motion.div>
         
         {/* Site exploration progress */}
-        <div className="fixed bottom-0 left-0 w-full z-40 px-4 pb-1 pt-8 pointer-events-none bg-gradient-to-t from-cyber-dark to-transparent">
+        <div className="fixed bottom-0 left-0 w-full z-40 px-4 pb-1 pt-8 pointer-events-none bg-gradient-to-t from-cyber-dark/90 to-transparent">
           <div className="container mx-auto">
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-cyber-light/60">Site Exploration:</span>
-              <Progress value={progress} size="sm" className="w-40 sm:w-60" />
+            <motion.div 
+              className="flex items-center gap-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1 }}
+            >
+              <span className="text-xs text-cyber-light/60">Exploration Progress:</span>
+              <Progress value={progress} className="w-40 sm:w-60 h-2" />
               <span className="text-xs text-cyber-light/60">{progress}%</span>
-            </div>
+            </motion.div>
           </div>
         </div>
         
-        {/* About section with cyber grid background */}
-        <div className="relative" id="about">
-          <BackgroundAnimation type="cyber" opacity={0.05} speed="slow" />
-          <AboutSection />
+        {/* Gamification sidebar */}
+        <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-30 hidden xl:block">
+          <GamificationSystem />
         </div>
 
-        {/* Team section with matrix background */}
-        <div className="relative" id="teams">
-          <BackgroundAnimation type="matrix" opacity={0.05} speed="medium" />
-          <TeamSection />
+        {/* Terminal access button */}
+        <div className="fixed top-20 right-4 z-30">
+          <CyberTerminal />
         </div>
         
-        {/* Cyber feature section with grid background */}
-        <div className="relative" id="features">
-          <BackgroundAnimation type="grid" opacity={0.04} speed="medium" />
+        {/* About section */}
+        <motion.div 
+          ref={aboutRef}
+          className="relative" 
+          id="about"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <EnhancedBackgroundAnimation type="cyber" className="opacity-10" />
+          <AboutSection />
+        </motion.div>
+
+        {/* Team section */}
+        <motion.div 
+          ref={teamsRef}
+          className="relative" 
+          id="teams"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <TeamSection />
+        </motion.div>
+        
+        {/* Cyber feature section */}
+        <motion.div 
+          ref={featuresRef}
+          className="relative" 
+          id="features"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <CyberFeatureSection />
-        </div>
+        </motion.div>
         
         {/* Cybersecurity tips section */}
-        <section className="py-16 md:py-24 relative">
+        <motion.section 
+          className="py-16 md:py-24 relative"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <div className="container mx-auto px-4">
             <h2 className="section-title">
               Expert <span className="gradient-text">Security</span> Tips
             </h2>
             <CyberSecurityTips />
           </div>
-        </section>
+        </motion.section>
         
-        {/* Course section with particles background */}
-        <div className="relative" id="courses">
-          <BackgroundAnimation type="particles" opacity={0.05} color="#7E69AB" speed="slow" />
+        {/* Course section */}
+        <motion.div 
+          ref={coursesRef}
+          className="relative" 
+          id="courses"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <CourseSection />
-        </div>
+        </motion.div>
         
-        {/* Challenges section with cyber grid background */}
-        <div className="relative" id="challenges">
-          <BackgroundAnimation type="cyber" opacity={0.05} color="#6A0DAD" speed="medium" />
+        {/* Challenges section */}
+        <motion.div 
+          ref={challengesRef}
+          className="relative" 
+          id="challenges"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <ChallengesSection />
-        </div>
+        </motion.div>
+
+        {/* Knowledge Hub section */}
+        <motion.div 
+          ref={knowledgeRef}
+          className="relative"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <KnowledgeHub />
+        </motion.div>
         
         {/* Content section */}
-        <div className="relative" id="content">
-          <BackgroundAnimation type="grid" opacity={0.04} speed="slow" />
+        <motion.div 
+          ref={contentRef}
+          className="relative" 
+          id="content"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <ContentSection />
-        </div>
+        </motion.div>
         
-        {/* Projects section with matrix background */}
-        <div className="relative" id="projects">
-          <BackgroundAnimation type="matrix" opacity={0.04} speed="medium" />
+        {/* Projects section */}
+        <motion.div 
+          ref={projectsRef}
+          className="relative" 
+          id="projects"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <ProjectsSection />
-        </div>
+        </motion.div>
         
-        {/* Contact section with particles background */}
-        <div className="relative" id="contact">
-          <BackgroundAnimation type="particles" opacity={0.08} speed="slow" />
+        {/* Contact section */}
+        <motion.div 
+          ref={contactRef}
+          className="relative" 
+          id="contact"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
           <ContactSection />
-        </div>
+        </motion.div>
       </main>
+      
       <Footer />
-    </div>
+      
+      {/* AI Assistant */}
+      <CyberAssistant />
+    </motion.div>
   );
 };
 
