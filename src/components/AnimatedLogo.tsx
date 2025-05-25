@@ -25,7 +25,6 @@ const CyberLogo3D = () => {
         anchorY="middle"
       >
         CWM
-        <meshStandardMaterial color="#9b87f5" emissive="#6A0DAD" emissiveIntensity={0.3} />
       </Text>
     </Float>
   );
