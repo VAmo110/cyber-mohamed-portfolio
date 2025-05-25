@@ -630,7 +630,7 @@ const InteractiveExperience = () => {
                             {currentStep.id === 14 ? (
                               <div className="space-y-4">
                                 <div className="flex items-center justify-center text-green-500">
-                                  <CheckCircleIcon size={60} />
+                                  <CheckCircle size={60} />
                                 </div>
                                 <h3 className="text-xl font-bold text-green-500">Mission Successful!</h3>
                                 <p className="text-cyber-light/80">
