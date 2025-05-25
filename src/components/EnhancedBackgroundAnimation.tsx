@@ -6,24 +6,24 @@ import * as THREE from 'three';
 
 const CyberParticles = () => {
   const ref = useRef<any>();
-  const [sphere] = useMemo(() => {
-    const positions = new Float32Array(5000 * 3);
-    const colors = new Float32Array(5000 * 3);
+  const [positions, colors] = useMemo(() => {
+    const positionsArray = new Float32Array(5000 * 3);
+    const colorsArray = new Float32Array(5000 * 3);
     
     for (let i = 0; i < 5000; i++) {
       const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * 50;
-      positions[i3 + 1] = (Math.random() - 0.5) * 50;
-      positions[i3 + 2] = (Math.random() - 0.5) * 50;
+      positionsArray[i3] = (Math.random() - 0.5) * 50;
+      positionsArray[i3 + 1] = (Math.random() - 0.5) * 50;
+      positionsArray[i3 + 2] = (Math.random() - 0.5) * 50;
       
       const color = new THREE.Color();
       color.setHSL(0.7 + Math.random() * 0.2, 0.8, 0.5 + Math.random() * 0.5);
-      colors[i3] = color.r;
-      colors[i3 + 1] = color.g;
-      colors[i3 + 2] = color.b;
+      colorsArray[i3] = color.r;
+      colorsArray[i3 + 1] = color.g;
+      colorsArray[i3 + 2] = color.b;
     }
     
-    return [positions, colors];
+    return [positionsArray, colorsArray];
   }, []);
 
   useFrame((state, delta) => {
@@ -35,7 +35,7 @@ const CyberParticles = () => {
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere[0]} stride={3} frustumCulled={false}>
+      <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
           vertexColors
